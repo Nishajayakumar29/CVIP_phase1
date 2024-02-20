@@ -1,0 +1,172 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Student {
+    public String Name;
+    public int id;
+    public String Department;
+    public int semester;
+    public int Currentstudyingyear;
+
+    public Student(String Name, int id, String Department, int semester, int Currentstudyingyear) {
+        this.Name = Name;
+        this.id = id;
+        this.Department = Department;
+        this.semester = semester;
+        this.Currentstudyingyear = Currentstudyingyear;
+    }
+
+    public String getName() {
+        return Name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getDepartment() {
+        return Department;
+    }
+
+    public int getSemester() {
+        return semester;
+    }
+
+    public int getCurrentstudyingyear() {
+        return Currentstudyingyear;
+    }
+
+    @Override
+    public String toString() {
+        return "Student ID: " + id + ", Name: " + Name + ", Department: " + Department + ", Semester: " + semester + ", Currentstudyingyear: " + Currentstudyingyear;
+    }
+}
+
+class StudentInformationSystem {
+    private ArrayList<Student> students;
+
+    public StudentInformationSystem() {
+        students = new ArrayList<>();
+    }
+
+    public void addStudent(Student student) {
+        students.add(student);
+    }
+
+    public void removeStudent(int id) {
+        for (Student student : students) {
+            if (student.getId() == id) {
+                students.remove(student);
+                return;
+            }
+        }
+        System.out.println("Student with ID " + id + " not found.");
+    }
+
+    public void displayStudents() {
+        if (students.isEmpty()) {
+            System.out.println("No students in the system.");
+        } else {
+            System.out.println("List of students:");
+            for (Student student : students) {
+                System.out.println(student);
+            }
+        }
+    }
+
+    public void searchStudent(String Name) {
+        boolean found = false;
+        for (Student student : students) {
+            if (student.getName().equalsIgnoreCase(Name)) {
+                System.out.println(student);
+                found = true;
+            }
+        }
+        if (!found) {
+            System.out.println("Student not found.");
+        }
+    }
+
+    public void updateStudentInformation(int id, String newName, String newDepartment) {
+        for (Student student : students) {
+            if (student.getId() == id) {
+                student.Name = newName;
+                student.Department = newDepartment;
+                return;
+            }
+        }
+        System.out.println("Student with ID " + id + " not found.");
+    }
+}
+
+public class StudentInformationSystemDemo {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        StudentInformationSystem sis = new StudentInformationSystem();
+
+        boolean exit = false;
+        while (!exit) {
+            System.out.println("\nStudent Information System");
+            System.out.println("1. Add Student details");
+            System.out.println("2. Remove Student details");
+            System.out.println("3. Update Student Information");
+            System.out.println("4. Display Students dteails");
+            System.out.println("5. Search Student details");
+            System.out.println("6. Exit");
+            System.out.print("Enter your choice: ");
+            int choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter student Name: ");
+                    scanner.nextLine(); 
+                    String name = scanner.nextLine();
+                    System.out.print("Enter student ID: ");
+                    int id = scanner.nextInt();
+                    System.out.print("Enter student Department: ");
+                    scanner.nextLine(); 
+                    String department = scanner.nextLine();
+                    System.out.print("Enter student Semester: ");
+                    int semester = scanner.nextInt();
+                    System.out.print("Enter student Current studying year: ");
+                    int currentStudyingYear = scanner.nextInt();
+                    sis.addStudent(new Student(name, id, department, semester, currentStudyingYear));
+                    System.out.println("Student added successfully.");
+                    break;
+                case 2:
+                    System.out.print("Enter student ID to remove: ");
+                    int removeId = scanner.nextInt();
+                    sis.removeStudent(removeId);
+                    System.out.println("Removed successfully");
+                    break;
+                case 3:
+                    System.out.print("Enter student ID to update: ");
+                    int updateId = scanner.nextInt();
+                    scanner.nextLine(); 
+                    System.out.print("Enter new Name: ");
+                    String newName = scanner.nextLine();
+                    System.out.print("Enter new Department: ");
+                    String newDepartment = scanner.nextLine();
+                    sis.updateStudentInformation(updateId, newName, newDepartment);
+                    System.out.println("Student information updated successfully.");
+                    break;
+                case 4:
+                    sis.displayStudents();
+                    break;
+                case 5:
+                    System.out.print("Enter student name to search: ");
+                    scanner.nextLine(); 
+                    String searchName = scanner.nextLine();
+                    sis.searchStudent(searchName);
+                    break;
+                case 6:
+                    exit = true;
+                    System.out.println("Exiting...... Thank you!");
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please enter a valid option.");
+            }
+        }
+        scanner.close();
+    }
+}
